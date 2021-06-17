@@ -12,7 +12,7 @@
 	.align 0
 
 	# Constantes
-	MAX_BINARY_DIGITS:	.word		33
+	MAX_BINARY_DIGITS:	.word		34
 	BINARY_BASE:		.word		2
 	DECIMAL_BASE:		.word		10
 	HEXADEC_BASE:		.word		16	

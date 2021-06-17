@@ -216,5 +216,3 @@ checkStringInput:
 return_SUCCESS:
 
 	jr $ra
-	
-.include "main.asm"
