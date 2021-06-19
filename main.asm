@@ -18,7 +18,7 @@
 	HEXADEC_BASE:		.word		16	
     
 	# Mensagem de erro
-	erroBaseInvalida:	.asciiz		"Erro: Dados de entrada inválida. Programa finalizado retornando 1.\n"
+	erroBaseInvalida:	.asciiz		"\nErro: Dado de entrada inválido. Programa finalizado retornando 1.\n"
 	
 	# Input
 	mensagemTitulo:		.asciiz 	"Bem vindo ao conversor de base!\n"
@@ -32,7 +32,7 @@
     
 		
 .text
-		.globl main
+	.globl main
 		
 main:
 
@@ -67,19 +67,19 @@ Exit_SUCCESS:
 	
 	# Exibe a mensagem e o número convertido na tela
 	li $v0, 4
-    la $a0, mensagemResultado
+        la $a0, mensagemResultado
 	syscall
 	move $a0, $s2
 	syscall
 
 	# Termino do programa
-    li $v0, 10
-    syscall
+        li $v0, 10
+        syscall
 
 Exit_FAILED:
 
 	li $v0, 4
-    la $a0, erroBaseInvalida
+    	la $a0, erroBaseInvalida
 	syscall
 
 	li $v0, 10

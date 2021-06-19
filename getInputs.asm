@@ -95,17 +95,18 @@ checkNumberInput:
 	la $t2, ($a0)		# Carrega o endereço da string do número
 
 	# Verifica se a base de origem é binária
-	li $t1, 66			# 66 = 'B'
-	beq $t0, $t1, checkBinary
+	beq $t0, 'B', checkBinary
+	beq $t0, 'b', checkBinary
 	
 	# Verifica se a base de origem é decimal
-	li $t1, 68			# 68 = 'D'
-	beq $t0, $t1, checkDecimal
+	beq $t0, 'D', checkDecimal
+	beq $t0, 'd', checkDecimal
 	
 	# Verifica se a base de origem é hexadecimal
-	li $t1, 72			# 72 = 'H'
 	li $t9, 0
-	beq $t0, $t1, checkHexadecimal
+
+	beq $t0, 'H', checkHexadecimal
+	beq $t0, 'h', checkHexadecimal
 
 # Confere se todos os dígitos estão entre 0 e 1
 checkBinary:
@@ -146,7 +147,6 @@ checkDecimal:
 		
 # Confere se todos os dígitos estão entre 0 e 9 ou A e F
 checkHexadecimal:
-
 	
 	li $t1, 10	
 	lb $t3, ($t2)
@@ -167,7 +167,6 @@ checkHexadecimal:
 
 
 checkHexadecimal_secondCheck:
-	
 	
 	# Se menor que 'A', indicar falha.
 	li $t1, 65  		# 65 = 'A'
@@ -190,17 +189,17 @@ checkBaseInput:
 
 	lb $t0, ($a0)
 
-	# Verifica se a base de origem é binario
-	li $t1, 66			# 66 = 'B'			
-	beq $t0, $t1, checkStringInput
+	# Verifica se a base de origem é binario		
+	beq $t0, 'B', checkStringInput
+	beq $t0, 'b', checkStringInput
 	
 	# Verifica se a base de origem é decimal
-	li $t1, 68  		# 68 = 'D'
-	beq $t0, $t1, checkStringInput
+	beq $t0, 'D', checkStringInput
+	beq $t0, 'd', checkStringInput
 	
 	# Verifica se a base de origem é hexadecimal
-	li $t1, 72  		# 72 = 'H'
-	beq $t0, $t1, checkStringInput
+	beq $t0, 'H', checkStringInput
+	beq $t0, 'h', checkStringInput
 
 	j Exit_FAILED
 

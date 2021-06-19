@@ -1,25 +1,25 @@
 # (Função)
-# convertDecToHex: Converte da base decimal para base hexadecimal
-# Argumentos ($a0, $a1): Número inteiro em decimal, base a ser convertida
-# Retorno ($v1): Número convertido em formato de string
+# convertDecToHex: Converte da base decimal para base hexadecimal.
+# Argumentos ($a0, $a1): Número inteiro em decimal, base a ser convertida.
+# Retorno ($v1): Número convertido em formato de string.
 convertDecToBase:
-	# t0: Tamanho da nova string
-	# t1: Base de destino
-	# t2: Resto da divuisão
+	# t0: Tamanho da nova string.
+	# t1: Base de destino.
+	# t2: Resto da divisão.
 	li $t0, 0
 	lb $t1, ($a1)
 
-	# Verifica se a base de destino é binario
-	li $t9, 66					
-	beq $t1, $t9, setBinaryDest
+	# Verifica se a base de destino é binario.					
+	beq $t1, 'B', setBinaryDest					
+	beq $t1, 'b', setBinaryDest
 	
-	# Verifica se a base de destino é decimal
-	li $t9, 68
-	beq $t1, $t9, setDecimalDest
+	# Verifica se a base de destino é decimal.
+	beq $t1, 'D', setDecimalDest
+	beq $t1, 'd', setDecimalDest
 	
-	# Verifica se a base de destino é hexadecimal
-	li $t9, 72
-	beq $t1, $t9, setHexadecimalDest
+	# Verifica se a base de destino é hexadecimal.
+	beq $t1, 'H', setHexadecimalDest
+	beq $t1, 'h', setHexadecimalDest
 
 setBinaryDest:
 	
@@ -39,45 +39,45 @@ setHexadecimalDest:
 
 convertDecToBase_BeginLoop:
 	beqz $a0, convertDecToBase_EndLoop
-	divu $a0, $t3				# Divide o numero de a0 por $t3	(base)
-	mflo $a0					# a0: Quociente da divuisao anterior, armazenando no lugar do antigo divuidendo
-	mfhi $t2					# t2: Resto da divuisao 
+	divu $a0, $t3				# Divide o número de a0 por $t3	(base).
+	mflo $a0				# a0: Quociente da divuisao anterior, armazenando no lugar do antigo dividendo.
+	mfhi $t2				# t2: Resto da divisão.
 
-	addu $t2, $t2, 48			# Converte o inteiro para sua representação em ASCII (+48)
-	addu $sp, $sp, -1			# Reserva um espaço na pilha
-	sb $t2, ($sp)				# Armazena o caractere na pilha
-	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido
+	addu $t2, $t2, 48			# Converte o inteiro para sua representação em ASCII (+48).
+	addu $sp, $sp, -1			# Reserva um espaço na pilha.
+	sb $t2, ($sp)				# Armazena o caractere na pilha.
+	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido.
 
 	j convertDecToHex_BeginLoop
 
 #a0: numero a ser convertido para hexadecimal
 convertDecToHex_BeginLoop:
 	beqz $a0, convertDecToBase_EndLoop
-	divu $a0, $t3				# Divide o numero de a0 por $t3	(base)
+	divu $a0, $t3				# Divide o número de a0 por $t3	(base).
 	mflo $a0					# a0: Quociente da divuisao anterior, armazenando no lugar do antigo divuidendo
-	mfhi $t2					# t2: Resto da divuisao 
+	mfhi $t2					# t2: Resto da divisão.
 
-	li $t4, 9					# Se 0 <= resto <= 9, tratar como número
+	li $t4, 9					# Se 0 <= resto <= 9, tratar como número.
 	ble $t2, $t4, isDigit
 
-	li $t4, 15					# Se resto > 9, tratar como letra
+	li $t4, 15					# Se resto > 9, tratar como letra.
 	ble $t2, $t4, isLetter
 
 # (Subrotinas de convertDecToHex_BeginLoop)
 # Realiza a conversão do dígito em decimal para hexadecimal
 isDigit:
-	addu $t2, $t2, 48			# Converte o inteiro para sua representação em ASCII (+48)
-	addu $sp, $sp, -1			# Reserva um espaço na pilha
-	sb $t2, ($sp)				# Armazena o caractere na pilha
-	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido
+	addu $t2, $t2, 48			# Converte o inteiro para sua representação em ASCII (+48).
+	addu $sp, $sp, -1			# Reserva um espaço na pilha.
+	sb $t2, ($sp)				# Armazena o caractere na pilha.
+	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido.
 
 	j convertDecToHex_BeginLoop
 
 isLetter:
-	addu $t2, $t2, 55			# Converte o inteiro para sua representação em ASCII (+55)
-	addu $sp, $sp, -1			# Reserva um espaço na pilha
-	sb $t2, ($sp)				# Armazena o caractere na pilha
-	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido
+	addu $t2, $t2, 55			# Converte o inteiro para sua representação em ASCII (+55).
+	addu $sp, $sp, -1			# Reserva um espaço na pilha.
+	sb $t2, ($sp)				# Armazena o caractere na pilha.
+	addu $t0, $t0, 1			# Incrementa o tamanho da string com o número convertido.
 	
 	j convertDecToHex_BeginLoop
 

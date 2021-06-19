@@ -12,17 +12,18 @@ convertToDec:
 	add $a0, $a0, $a1
 	lb $t8, ($a2)		
 
-	# Verifica se a base de origem é binario
-	li $t9, 66					
-	beq $t8, $t9, setBinaryOrig
+	# Verifica se a base de origem é binario					
+	beq $t8, 'B', setBinaryOrig
+	beq $t8, 'b', setBinaryOrig
 	
 	# Verifica se a base de origem é decimal
-	li $t9, 68
-	beq $t8, $t9, setDecimalOrig
+	beq $t8, 'D', setDecimalOrig
+	beq $t8, 'd', setDecimalOrig
 	
 	# Verifica se a base de origem é hexadecimal
-	li $t9, 72
-	beq $t8, $t9, setHexadecimalOrig 
+	beq $t8, 'H', setHexadecimalOrig
+	beq $t8, 'h', setHexadecimalOrig
+	
 
 # (Subrotina de convertToDec)
 # Define a base a ser usada com base no parâmetro de entrada
@@ -47,25 +48,25 @@ convertDecimal:
 	# t2: Acumuluador intermediário
 	# t3: Byte carregado da string
 
-	lb $t3, ($a0)						# Carrega o byte atual da string
+	lb $t3, ($a0)			        # Carrega o byte atual da string.
 	bgt $t0, $a1, convertDecimal_EXIT
 
-	addu $t3, $t3, -48			# Remove o valor ASCII, deixando só o valor numérico
-	mulu $t3, $t2, $t3			# Multiplica o valor numérico carregado com a potência da base
-	add $v1, $t3, $v1			# Soma o resultado ao registrador de retorno ($v1)
-	mulu $t2, $t1, $t2			# Eleva ao quadrado o valor da potência da base
+	addu $t3, $t3, -48			# Remove o valor ASCII, deixando só o valor numérico.
+	mulu $t3, $t2, $t3			# Multiplica o valor numérico carregado com a potência da base.
+	add $v1, $t3, $v1			# Soma o resultado ao registrador de retorno ($v1).
+	mulu $t2, $t1, $t2			# Eleva ao quadrado o valor da potência da base.
 	
-	addu $a0, $a0, -1			# Vai para o próximo byte da string
-	addu $t0, $t0, 1			# Incrementa o contador do loop
+	addu $a0, $a0, -1			# Vai para o próximo byte da string.
+	addu $t0, $t0, 1			# Incrementa o contador do loop.
 	
-	bgt $t0, 8, checkDecimalOverflow 	#Quando tiver 9 digitos confere para nao dar overflow
+	bgt $t0, 8, checkDecimalOverflow 	# Quando tiver 9 digitos, confere para não dar overflow.
 	j convertDecimal
 
 # Confere se o decimal ultrapassa o limite de 4 bytes
 # Entra com o numero decimal em $a0 contendo 9 digitos
 checkDecimalOverflow:
-	lb $t3, ($a0)						# $t3: Valor mais significativo de $a0
-	bgt $t3, 52, Exit_FAILED			# Se $t3 for superior a 4 (52 - ASCII) seria overflow
+	lb $t3, ($a0)				# $t3: Valor mais significativo de $a0
+	bgt $t3, 52, Exit_FAILED		# Se $t3 for superior a 4 (52 - ASCII) seria overflow
 	beq $t3, 52, lessDecimalOverflow	# Caso seja igual a 4, é necessario outra verificação
 
 # Caso o numero decimal tenha 9 digitos
