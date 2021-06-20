@@ -38,7 +38,8 @@ getInputs:
 
 	# Checa a validade da string de entrada.
 	jal checkBaseInput
-
+    
+    # Pega o endereço da string (a0) e o tamanho (a1).
     move $s0, $a0		# Mover o endereço de a0 para s0.
     move $s1, $a1		# Mover o endereço de a1 para s1.
     
@@ -67,6 +68,7 @@ getInputs:
     la $a0, mensagemOpcoes
     syscall
     
+    li $v0, 4
     la $a0, requerirBaseOutput
     syscall
 

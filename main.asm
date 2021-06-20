@@ -20,18 +20,18 @@
 	# Mensagem de erro
 	erroBaseInvalida:	.asciiz		"\nErro: Dado de entrada inválido. Programa finalizado retornando 1.\n"
 	erroBaseOverflow:	.asciiz		"\nErro: Dado de entrada excede o limite permitido.\n"
+
 	
-	
-	# Input
+	# Interação Humano-Computador
+	requerirBaseOutput:	.asciiz 	"Digite a letra correspondente à base de destino: "
 	mensagemTitulo:		.asciiz 	"Bem vindo ao conversor de base!\n"
 	mensagemOpcoes:		.asciiz 	"Opções: (B)inário	(D)ecimal 	(H)exadecimal\n"
 	requerirBaseInput:	.asciiz 	"Digite a letra correspondente à base numérica de origem: "
 	entradaNumero:		.asciiz 	"Digite o número para conversão: "
-	requerirBaseOutput:	.asciiz 	"Digite a letra correspondente à base de destino: "
-	
-	# Output
+	mensagemZero:		.asciiz 	"Independentemente da base escolhida, zero é zero."
 	mensagemResultado:	.asciiz 	"O número convertido é: "
-    	mensagemZero:		.asciiz 	"Independentemente da base escolhida, zero é zero."
+	
+    	
 		
 .text
 	.globl main
