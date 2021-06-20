@@ -1,9 +1,3 @@
-# T1-ORGCOMP
-Assembly is my passion
-- tratar erros de input
-- tratar bit de sinal
-- é pra funcional com 32 bits então deve ser tratado o bit de sinal
-- checar se o número é maior que 32 bits
-- como detectar se é maior que 32 bits?
-- possivel detectar se é maior que o INT_MAX é varrendo a string e contando o strlen
-- "294.967.295" de "4.294.967.295" -> o primeiro cabe em um registrador de 32 bits, basta verificar o primeiro caractere
+# Number Base Converter
+
+Simple base converter made in MIPS Assembly for **SSC0902 - Computer Organization and Architecture** discipline at ICMC/USP. The main motivation of this project is to understand how we can eventually work directly with registers and how does the work flow of an Assembly language can be.
