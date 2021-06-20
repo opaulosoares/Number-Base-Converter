@@ -58,6 +58,8 @@ convertDecimal:
 	# t3: Byte carregado da string.
 
 	lb $t3, ($a0)			        # Carrega o byte atual da string.
+	bgt $a1, 10, Exit_FAILED_Overflow 	# Se o tamanho da string for maior que 10, retorna erro.
+	beq $t0, 9, checkDecimalOverflow 	# Quando tiver 9 digitos, confere para não dar overflow.
 	bgt $t0, $a1, convertDecimal_EXIT
 
 	addu $t3, $t3, -48			# Remove o valor ASCII, deixando só o valor numérico.
@@ -74,7 +76,7 @@ convertDecimal:
 # Confere se o decimal ultrapassa o limite de 4 bytes.
 # Entra com o número decimal em $a0 contendo 9 dígitos.
 checkDecimalOverflow:
-	lb $t3, ($a0)						# $t3: Valor mais significativo de $a0.
+	lb $t3, ($a0)				# $t3: Valor mais significativo de $a0.
 	bgt $t3, 52, Exit_FAILED_Overflow	# Se $t3 for superior a 4 (52 - ASCII) seria overflow.
 	beq $t3, 52, lessDecimalOverflow	# Caso seja igual a 4, é necessario outra verificação.
 
