@@ -43,11 +43,12 @@ setBinaryOrig:
 
 setDecimalOrig:
 	
+	bgt $a1, 10, Exit_FAILED_Overflow
 	lw $t1, DECIMAL_BASE
 	j convertDecimal
 
 setHexadecimalOrig:
-	
+	bgt $a1, 8, Exit_FAILED_Overflow
 	lw $t1, HEXADEC_BASE
 	j convertToDecimal_Hex
 
@@ -58,7 +59,6 @@ convertDecimal:
 	# t3: Byte carregado da string.
 
 	lb $t3, ($a0)			        # Carrega o byte atual da string.
-	bgt $a1, 10, Exit_FAILED_Overflow 	# Se o tamanho da string for maior que 10, retorna erro.
 	beq $t0, 9, checkDecimalOverflow 	# Quando tiver 9 digitos, confere para não dar overflow.
 	bgt $t0, $a1, convertDecimal_EXIT
 

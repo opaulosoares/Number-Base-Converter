@@ -55,6 +55,8 @@ getInputs:
     syscall
 
 	# Checa a validade da string de entrada.
+	la $t2, ($a0)	   # Carrega o endereço da string do número antes do checkZero.
+	jal checkZeroInput # Primeiro verifica se todos os caracteres dados são zero.
 	jal checkNumberInput
 
     move $s2, $a0		# Mover o endereço de a0 para s2.
@@ -64,6 +66,7 @@ getInputs:
 	li $v0, 4
     la $a0, mensagemOpcoes
     syscall
+    
     la $a0, requerirBaseOutput
     syscall
 
@@ -83,6 +86,20 @@ getInputs:
 	lw $ra, ($sp) 		# Recupera o endereço de retorno da main.
     	
     jr $ra
+
+checkZeroInput:
+    	
+	li $t1, 10			# 10 = '\n'
+	lb $t3, ($t2)		# Carrega o byte atual da string do número.
+	beq $t1, $t3, Exit_ZERO
+
+	# Se menor que 0, indicar falha.
+	li $t1, '0'
+	bne $t3, $t1, return_SUCCESS
+	
+	addu $t2, $t2, 1	# Incrementa o ponteiro da string.
+	
+	j checkZeroInput
 	
 # (Subrotina de getInput)
 # Checa se o número informado de entrada é compatível com a base escolhida.
@@ -194,6 +211,7 @@ checkHexadecimal_secondCheck:
 
 # (Subrotina de getInput)
 # Checa se a base informada de entrada é compatível com as opções e a formatação proposta.
+# Sendo $a0 a base.
 checkBaseInput:
 
 	lb $t0, ($a0)

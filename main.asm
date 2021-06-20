@@ -15,22 +15,23 @@
 	MAX_BINARY_DIGITS:	.word		34
 	BINARY_BASE:		.word		2
 	DECIMAL_BASE:		.word		10
-	HEXADEC_BASE:		.word		16	
+	HEXADEC_BASE:		.word		16
     
 	# Mensagem de erro
 	erroBaseInvalida:	.asciiz		"\nErro: Dado de entrada inválido. Programa finalizado retornando 1.\n"
 	erroBaseOverflow:	.asciiz		"\nErro: Dado de entrada excede o limite permitido.\n"
+	
 	
 	# Input
 	mensagemTitulo:		.asciiz 	"Bem vindo ao conversor de base!\n"
 	mensagemOpcoes:		.asciiz 	"Opções: (B)inário	(D)ecimal 	(H)exadecimal\n"
 	requerirBaseInput:	.asciiz 	"Digite a letra correspondente à base numérica de origem: "
 	entradaNumero:		.asciiz 	"Digite o número para conversão: "
-	requerirBaseOutput:	.asciiz 	"Digite a letra correspondente à base númerica de destino: "
+	requerirBaseOutput:	.asciiz 	"Digite a letra correspondente à base de destino: "
 	
 	# Output
 	mensagemResultado:	.asciiz 	"O número convertido é: "
-    
+    	mensagemZero:		.asciiz 	"Independentemente da base escolhida, zero é zero."
 		
 .text
 	.globl main
@@ -76,6 +77,15 @@ Exit_SUCCESS:
 	# Termino do programa.
         li $v0, 10
         syscall
+
+Exit_ZERO:
+	
+	li $v0, 4
+    	la $a0, mensagemZero
+	syscall
+
+	li $v0, 10
+	syscall
 
 Exit_FAILED:
 
