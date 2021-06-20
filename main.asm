@@ -19,6 +19,7 @@
     
 	# Mensagem de erro
 	erroBaseInvalida:	.asciiz		"\nErro: Dado de entrada inválido. Programa finalizado retornando 1.\n"
+	erroBaseOverflow:	.asciiz		"\nErro: Dado de entrada excede o limite permitido.\n"
 	
 	# Input
 	mensagemTitulo:		.asciiz 	"Bem vindo ao conversor de base!\n"
@@ -36,27 +37,27 @@
 		
 main:
 
-	jal getInputs				# Recebe os inputs que serão trabalhados
+	jal getInputs				# Recebe os inputs que serão trabalhados.
 	
-	move $a0, $s2				# Argumento 1: Endereço da string do número dado de entrada
+	move $a0, $s2				# Argumento 1: Endereço da string do número dado de entrada.
 	jal stringLength
 	move $s6, $v1
 	
-	move $a0, $s2				# Argumento 1: Endereço da string do número dado de entrada
-	move $a1, $s6				# Argumento 2: Tamanho da string do número dado de entrada
+	move $a0, $s2				# Argumento 1: Endereço da string do número dado de entrada.
+	move $a1, $s6				# Argumento 2: Tamanho da string do número dado de entrada.
 	addu $a1, $a1, -1
-	move $a2, $s0				# Argumento 3: Endereço da string da base de entrada
-	jal convertToDec			# Realiza o pré-processamento e a conversão do número de entrada para decimal
+	move $a2, $s0				# Argumento 3: Endereço da string da base de entrada.
+	jal convertToDec			# Realiza o pré-processamento e a conversão do número de entrada para decimal.
 	
 	
-	# Reserva espaço para armazenar a string com o número convertido
+	# Reserva espaço para armazenar a string com o número convertido.
 	li $v0, 9
 	lw $a0, MAX_BINARY_DIGITS
 	syscall
 
-	move $a0, $v1				# Passa o retorno da função convertToDec como parâmetro para a função convertDecToHex
+	move $a0, $v1				# Passa o retorno da função convertToDec como parâmetro para a função convertDecToHex.
 	move $a1, $s4
-	move $v1, $v0				# Liga o espaço de memória dinâmico ao registrador de retorno da função
+	move $v1, $v0				# Liga o espaço de memória dinâmico ao registrador de retorno da função.
 	jal convertDecToBase
 	
 	move $s2, $v1
@@ -65,14 +66,14 @@ main:
 # (Subrotinas de main)
 Exit_SUCCESS:
 	
-	# Exibe a mensagem e o número convertido na tela
+	# Exibe a mensagem e o número convertido na tela.
 	li $v0, 4
         la $a0, mensagemResultado
 	syscall
 	move $a0, $s2
 	syscall
 
-	# Termino do programa
+	# Termino do programa.
         li $v0, 10
         syscall
 
@@ -80,6 +81,15 @@ Exit_FAILED:
 
 	li $v0, 4
     	la $a0, erroBaseInvalida
+	syscall
+
+	li $v0, 10
+	syscall
+
+Exit_FAILED_Overflow:
+
+	li $v0, 4
+    	la $a0, erroBaseOverflow
 	syscall
 
 	li $v0, 10

@@ -12,21 +12,30 @@ convertToDec:
 	add $a0, $a0, $a1
 	lb $t8, ($a2)		
 
-	# Verifica se a base de origem é binario					
-	beq $t8, 'B', setBinaryOrig
-	beq $t8, 'b', setBinaryOrig
+	# Verifica se a base de origem é binario.
+	li 	$t1, 'B'
+	beq $t8, $t1, setBinaryOrig
+
+	li 	$t1, 'b'
+	beq $t8, $t1, setBinaryOrig
 	
-	# Verifica se a base de origem é decimal
-	beq $t8, 'D', setDecimalOrig
-	beq $t8, 'd', setDecimalOrig
+	# Verifica se a base de origem é decimal.
+	li 	$t1, 'D'
+	beq $t8, $t1, setDecimalOrig
+
+	li 	$t1, 'd'
+	beq $t8, $t1, setDecimalOrig
 	
-	# Verifica se a base de origem é hexadecimal
-	beq $t8, 'H', setHexadecimalOrig
-	beq $t8, 'h', setHexadecimalOrig
+	# Verifica se a base de origem é hexadecimal.
+	li 	$t1, 'H'
+	beq $t8, $t1, setHexadecimalOrig
+
+	li 	$t1, 'h'
+	beq $t8, $t1, setHexadecimalOrig
 	
 
 # (Subrotina de convertToDec)
-# Define a base a ser usada com base no parâmetro de entrada
+# Define a base a ser usada com base no parâmetro de entrada.
 setBinaryOrig:
 	
 	lw $t1, BINARY_BASE
@@ -43,10 +52,10 @@ setHexadecimalOrig:
 	j convertToDecimal_Hex
 
 # (Subrotina de convertToDec)
-# Realiza a conversão Binário -> Decimal (e Decimal -> Decimal)
+# Realiza a conversão Binário -> Decimal (e Decimal -> Decimal).
 convertDecimal:
-	# t2: Acumuluador intermediário
-	# t3: Byte carregado da string
+	# t2: Acumuluador intermediário.
+	# t3: Byte carregado da string.
 
 	lb $t3, ($a0)			        # Carrega o byte atual da string.
 	bgt $t0, $a1, convertDecimal_EXIT
@@ -62,39 +71,39 @@ convertDecimal:
 	bgt $t0, 8, checkDecimalOverflow 	# Quando tiver 9 digitos, confere para não dar overflow.
 	j convertDecimal
 
-# Confere se o decimal ultrapassa o limite de 4 bytes
-# Entra com o numero decimal em $a0 contendo 9 digitos
+# Confere se o decimal ultrapassa o limite de 4 bytes.
+# Entra com o número decimal em $a0 contendo 9 dígitos.
 checkDecimalOverflow:
-	lb $t3, ($a0)				# $t3: Valor mais significativo de $a0.
-	bgt $t3, 52, Exit_FAILED		# Se $t3 for superior a 4 (52 - ASCII) seria overflow.
+	lb $t3, ($a0)						# $t3: Valor mais significativo de $a0.
+	bgt $t3, 52, Exit_FAILED_Overflow	# Se $t3 for superior a 4 (52 - ASCII) seria overflow.
 	beq $t3, 52, lessDecimalOverflow	# Caso seja igual a 4, é necessario outra verificação.
 
-# Caso o numero decimal tenha 9 digitos
-# E o mais significativo seja 4
-# Como o numero max permitido é 4294967295
+# Caso o número decimal tenha 9 dígitos.
+# E o mais significativo seja 4.
+# Como o número máximo permitido é 4294967295.
 lessDecimalOverflow:
-	bgt $v1, 294967295, Exit_FAILED		# Compara com o maximo valor tirando o numero mais significativo.
+	bgt $v1, 294967295, Exit_FAILED_Overflow	# Compara com o maximo valor tirando o número mais significativo.
 	
 # (Subrotina de convertToDec)
 # Realiza a conversão Hexadecimal->Decimal
 convertToDecimal_Hex:
-	# t3: Byte carregado da string
-	# t4: Comparador de se o dígito é um número (0-9) ou letra (A-F)
-	#bgt $s6, 8, Exit_FAILED	# Se o numero em hexadecimal tiver mais que 8 digitos é invalido.
+	# t3: Byte carregado da string.
+	# t4: Comparador de se o dígito é um número (0-9) ou letra (A-F).
+	#bgt $s6, 8, Exit_FAILED	# Se o número em hexadecimal tiver mais que 8 digitos é inválido.
 
 	lb $t3, ($a0)				# Carrega o byte atual da string.
 	bgt $t0, $a1, convertDecimal_EXIT
 	
-	# Se o dígito em hexadecimal estiver entre 0 e 9.
-	li $t4, 57				# 57 = '9'
+	# Se o dígito em hexadecimal estiver entre 0 e 9
+	li $t4, '9'					# 57 = '9'
 	ble $t3, $t4, Hex_isDigit
 	
-	# Se o dígito em hexadecimal estiver entre A e F.
-	li $t4, 70				# 70 = 'F'
+	# Se o dígito em hexadecimal estiver entre A e F
+	li $t4, 'F'					# 70 = 'F'
 	ble $t3, $t4, Hex_isChar
 	
 # (Subrotinas de convertToDecimal_Hex)
-# Realiza a conversão do dígito em hexadecial para decimal
+# Realiza a conversão do dígito em hexadecial para decimal.
 Hex_isDigit:
 	# t2: Acumuluador intermediário
 	addu $t3, $t3, -48		# Remove o valor ASCII (-48), deixando só o valor numérico.
