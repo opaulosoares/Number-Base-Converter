@@ -95,7 +95,7 @@ checkZeroInput:
 	lb $t3, ($t2)		# Carrega o byte atual da string do número.
 	beq $t1, $t3, Exit_ZERO
 
-	# Se menor que 0, indicar falha.
+	# Se não for igual a zero, continua a verificação.
 	li $t1, '0'
 	bne $t3, $t1, return_SUCCESS
 	
