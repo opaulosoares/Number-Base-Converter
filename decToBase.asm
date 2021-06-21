@@ -1,5 +1,5 @@
 # (Função)
-# convertDecToHex: Converte da base decimal para base hexadecimal.
+# convertDecToBase: Converte da base decimal para a base indicada no input.
 # Argumentos ($a0, $a1): Número inteiro em decimal, base a ser convertida.
 # Retorno ($v1): Número convertido em formato de string.
 convertDecToBase:
@@ -30,6 +30,7 @@ convertDecToBase:
 	li	$t9, 'h'
 	beq $t1, $t9, setHexadecimalDest
 
+# Subrotinas para encaminhar o programa para seu trajeto correto.
 setBinaryDest:
 	
 	lw $t3, BINARY_BASE
@@ -44,7 +45,6 @@ setHexadecimalDest:
 	
 	lw $t3, HEXADEC_BASE
 	j convertDecToHex_BeginLoop
-	
 
 convertDecToBase_BeginLoop:
 	beqz $a0, convertDecToBase_EndLoop
